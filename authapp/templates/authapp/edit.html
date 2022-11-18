@@ -1,0 +1,78 @@
+{% extends 'mainapp/base.html' %}
+{% block content %}
+
+<div class="row justify-content-center my-2">
+    <div class="col-lg-6 ">
+        <h3 class="text-center">Редактирование профиля</h3>
+        <div class="row justify-content-center">
+            <div class="col-sm-7 col-md-5 col-lg-4">
+                {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="" width="100%">
+                {% else %}
+                <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+                {% endif %}
+            </div>
+        </div>
+        <form class="pt-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>
+                <input type="text" name="username" autofocus=""
+                       value="{{ user.username }}"
+                       autocapitalize="none" autocomplete="username"
+                       maxlength="150" class="textinput textInput form-control"
+                       required="" id="id_username" placeholder="Username">
+            </p>
+            <p>
+                <input type="text" name="email" autofocus=""
+                       value="{{ user.email }}"
+                       autocapitalize="none" autocomplete="email"
+                       maxlength="150" class="textinput textInput form-control"
+                       required="" id="id_email" placeholder="Email">
+            </p>
+            <p>
+                <input type="text" name="first_name" autocapitalize="none"
+                       value="{{ user.first_name }}"
+                       maxlength="150" class="textinput textInput form-control"
+                       required="" placeholder="First name">
+            </p>
+            <p>
+                <input type="text" name="last_name" autocapitalize="none"
+                       value="{{ user.last_name }}"
+                       maxlength="150" class="textinput textInput form-control"
+                       required="" placeholder="Last name">
+            </p>
+            <p>
+                <input type="number" name="age" autocapitalize="none"
+                       value="{{ user.age }}"
+                       class="textinput textInput form-control"
+                       required="" placeholder="Age">
+            </p>
+            <p>
+                <input type="file" name="avatar"
+                       class="textinput textInput form-control"
+                       required="" placeholder="Avatar">
+            </p>
+            <p>
+                <button type="submit" class="btn btn-primary btn-block">
+                    Сохранить
+                </button>
+            </p>
+    </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $(document).ready(function () {
+        {% if messages %}
+            $(".toast").toast({ delay: 5000 });
+            $(".toast").toast("show");
+        {% endif %}
+    });
+</script>
+
+{% endblock %}
