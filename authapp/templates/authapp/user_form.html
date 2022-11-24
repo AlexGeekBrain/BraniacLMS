@@ -1,10 +1,12 @@
-{% extends 'mainapp/base.html' %}
+{% extends 'authapp/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-
 <div class="row justify-content-center my-2">
-    <div class="col-lg-6 ">
-        <h3 class="text-center">Редактирование профиля</h3>
+    <div class="col-lg-auto">
+        {% if user.is_anonymous %}
+        <h3>Регистрация нового пользователя</h3>
+        {% else %}
+        <h3>Редактировать профиль</h3>
         <div class="row justify-content-center">
             <div class="col-sm-7 col-md-5 col-lg-4">
                 {% if user.avatar %}
@@ -14,20 +16,21 @@
                 {% endif %}
             </div>
         </div>
-        <form class="pt-2" method="post" enctype="multipart/form-data">
+        {% endif %}
+        <form method="post" class="mt-2" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|crispy }}
-            <p>
-                <button type="submit" class="btn btn-primary btn-block">
-                    Сохранить
-                </button>
-            </p>
+            <button type="submit" class="btn btn-primary btn-block">
+                {% if user.is_anonymous %}
+                Зарегистрироваться
+                {% else %}
+                Сохранить
+                {% endif %}
+            </button>
+        </form>
     </div>
-    </form>
 </div>
-
-
-{% endblock %}
+{% endblock content %}
 
 {% block js %}
 

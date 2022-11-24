@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -12,8 +13,8 @@ class News(models.Model):
     update_at = models.DateTimeField(auto_now=True, verbose_name='Обновлен')
     deleted = models.BooleanField(default=False, verbose_name='Удалено')
 
-    def __str__(self):
-        return f'{self.title}'
+    def __str__(self) -> str:
+        return f'#{self.pk} {self.title}'
 
     class Meta:
         verbose_name = 'Новость'
@@ -34,8 +35,8 @@ class Course(models.Model):
     update_at = models.DateTimeField(auto_now=True, verbose_name='Обновлен')
     deleted = models.BooleanField(default=False, verbose_name='Удалено')
 
-    def __str__(self):
-        return f'{self.title}'
+    def __str__(self) -> str:
+        return f'#{self.pk} {self.title}'
 
     class Meta:
         verbose_name = 'Курс'
@@ -84,3 +85,23 @@ class CourseTeacher(models.Model):
     def delete(self, *args, **kwargs):
         self.deleted = True
         self.save()
+
+
+class CourseFeedback(models.Model):
+    RATING = (
+        (5, "⭐⭐⭐⭐⭐"),
+        (4, "⭐⭐⭐⭐"),
+        (3, "⭐⭐⭐"),
+        (2, "⭐⭐"),
+        (1, "⭐")
+    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, verbose_name='Пользователь')
+    feedback = models.TextField(default='Без отзыва', verbose_name='Отзыв')
+    rating = models.SmallIntegerField(choices=RATING, default=5, verbose_name='Рейтинг')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
+    deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Отзыв на {self.course} от {self.user}"
+    
