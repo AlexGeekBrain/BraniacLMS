@@ -1,0 +1,43 @@
+{% extends 'mainapp/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="row justify-content-center my-2">
+    <div class="col-lg-6 ">
+        <h3 class="text-center">Редактирование профиля</h3>
+        <div class="row justify-content-center">
+            <div class="col-sm-7 col-md-5 col-lg-4">
+                {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="" width="100%">
+                {% else %}
+                <img src="{{ MEDIA_URL }}avatar_default.svg" alt="" width="100%">
+                {% endif %}
+            </div>
+        </div>
+        <form class="pt-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <p>
+                <button type="submit" class="btn btn-primary btn-block">
+                    Сохранить
+                </button>
+            </p>
+    </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $(document).ready(function () {
+        {% if messages %}
+            $(".toast").toast({ delay: 5000 });
+            $(".toast").toast("show");
+        {% endif %}
+    });
+</script>
+
+{% endblock %}
