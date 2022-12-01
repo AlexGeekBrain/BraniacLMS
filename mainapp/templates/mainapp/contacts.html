@@ -7,6 +7,7 @@
   <div class="container">
     <h1 class="display-4">Наши контакты</h1>
     <p class="lead">Обязательно свяжитесь с нами! Ваш комфорт - наша забота.</p>
+
   </div>
 </div>
 </p>
@@ -42,4 +43,16 @@
   
 </div>
 </p>
-{% endblock %}
+<div class="row">
+      <form method="post" class="from-group col-4">
+        {% csrf_token %}
+        <h5 class="text-center">Отправить сообщение в техподдержку</h5>
+        <textarea class="form-control" name="message_body"></textarea>
+        <input type="submit" class="btn btn-primary btn-block" value="Отправить"/>
+      </form>
+    </div>
+<p>
+
+</p>
+
+{% endblock content %}

@@ -10,7 +10,7 @@
         <a href="{% url 'mainapp:courses_detail' pk=item.pk %}">
             <img src="{% static item.cover %}" class="card-img-top">
             <div class="card-body">
-                <h5 class="card-title text-center">{{ item.name }}</h5>
+                <h5 class="card-title text-center">{{ item.title }}</h5>
             </div>
         </a>
     </div>

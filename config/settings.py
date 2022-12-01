@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-c&j#%2kyk4v9-95e@81ue$x^u+9ik#j8mo5#m1+hu$uo*90=54
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+if DEBUG:
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
 
 
 # Application definition
@@ -41,6 +46,7 @@ INSTALLED_APPS = [
     'authapp',
     'social_django',
     'crispy_forms',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -153,3 +161,49 @@ SOCIAL_AUTH_GITHUB_SECRET = '69c6b99bfe60ec11b80b4e36c683992fbf47c88f'
 
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    }
+}
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_PORT = '465'
+# EMAIL_HOST_USER = 'myname@yandex.ru'
+# EMAIL_HOST_PASSWORD = 'mypassword'
+# EMAIL_USE_SSL = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'emails-tmp'
+
+LOG_FILE = BASE_DIR / 'log' / 'main_log.log'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '[%(asctime)s] %(levelname)s %(name)s (%(lineno)d) %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+            'formatter': 'console',
+        },
+        'console': {'class': 'logging.StreamHandler', 'formatter': 'console'},
+    },
+    'loggers': {
+        'django': {'level': 'INFO', 'handlers': ['file', 'console']},
+    },
+}

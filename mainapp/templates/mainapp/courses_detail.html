@@ -1,11 +1,11 @@
 {% extends 'mainapp/base.html' %}
-{% load static crispy_forms_tags %}
+{% load static crispy_forms_tags cache %}
 {% block title %}
-{{ course_object.name }}
+{{ course_object.title }}
 {% endblock title %}
 {% block content %}
 <h1 class="mt-2">
-  {{ course_object.name }}
+  {{ course_object.title }}
 </h1>
 <div class="row justify-content-center">
   <div class="col-sm-12 col-md-6 col-lg-8 order-2 order-md-1">
@@ -56,6 +56,7 @@
   </div>
 </div>
 <div class="accordion" id="accordionLessons">
+  {% cache 300 lessons %}
   {% for item in lessons %}
   <div class="card">
     <div class="card-header" id="headLessonPk{{ item.pk }}">
@@ -63,7 +64,7 @@
         <button class="btn btn-link btn-block text-left" type="button"
                 data-toggle="collapse" data-target="#collapse{{ item.pk }}"
                 aria-expanded="true" aria-controls="collapse{{ item.pk }}">
-          {{ item.course.name }} - {{ item.title }}
+          {{ item.course.title }} - {{ item.title }}
         </button>
       </h2>
     </div>
@@ -87,6 +88,7 @@
     </div>
   </div>
   {% endfor %}
+  {% endcache %}
 </div>
 <h3>Отзывы</h3>
 <div id="feedback_list">

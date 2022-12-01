@@ -1,11 +1,15 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.http import JsonResponse
+from django.conf import settings
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
+from django.core.cache import cache
+from django.http import JsonResponse, FileResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from mainapp.models import News, Course, Lesson, CourseTeacher, CourseFeedback
 from mainapp.forms import CourseFeedbackForm
+from mainapp import tasks
 
 
 class ContactsView(TemplateView):
@@ -35,6 +39,13 @@ class ContactsView(TemplateView):
             }
         ]
         return context_data
+
+    def post(self, *args, **kwargs):
+        message_body = self.request.POST.get('message_body')
+        message_from = self.request.user.pk if self.request.user.is_authenticated else None
+        tasks.send_feedback_to_email.delay(message_body, message_from)
+
+        return HttpResponseRedirect(reverse_lazy('mainapp:contacts'))
 
 
 class CoursesListView(ListView):
@@ -97,8 +108,15 @@ class CoursesDetailView(TemplateView):
         if not self.request.user.is_anonymous:
             if not CourseFeedback.objects.filter(course=context["course_object"], user=self.request.user).count():
                 context["feedback_form"] = CourseFeedbackForm(course=context["course_object"], user=self.request.user)
-        context["feedback_list"] = CourseFeedback.objects.filter(course=context["course_object"]).order_by(
-            "-created", "-rating")[:5]
+
+        cached_feedback_list = cache.get(f'feedback_list_{pk}')
+        if not cached_feedback_list:
+            context["feedback_list"] = CourseFeedback.objects.filter(course=context["course_object"]).order_by(
+                "-created", "-rating")[:5]
+            cache.set(f'feedback_list_{pk}', context['feedback_list'], timeout=300)
+        else:
+            context['feedback_list'] = cached_feedback_list
+
         return context
 
 
@@ -110,3 +128,27 @@ class CourseFeedbackFormProcessView(LoginRequiredMixin, CreateView):
         self.object = form.save()
         rendered_card = render_to_string("mainapp/includes/feedback_card.html", context={'item': self.object})
         return JsonResponse({'card': rendered_card})
+
+
+class LogView(TemplateView):
+    template_name = 'mainapp/logs_view.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        log_slice = []
+        with open(settings.LOG_FILE, 'r') as log_file:
+            for i, line in enumerate(log_file):
+                if i == 1000:
+                    break
+                log_slice.insert(0, line)
+            context_data['logs'] = ''.join(log_slice)
+        return context_data
+
+
+class LogDownloadView(UserPassesTestMixin, View):
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def get(self, *args, **kwargs):
+        return FileResponse(open(settings.LOG_FILE, 'rb'))
