@@ -3,8 +3,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, CreateView, UpdateView
-from authapp.models import User
 
+from authapp.models import User
 from authapp.forms import CustomUserCreationForm, CustomUserChangeForm
 
 

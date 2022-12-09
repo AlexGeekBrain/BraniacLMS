@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
+
 from mainapp.models import News, Course, Lesson, CourseTeacher, CourseFeedback
 from mainapp.forms import CourseFeedbackForm
 from mainapp import tasks
@@ -114,6 +115,12 @@ class CoursesDetailView(TemplateView):
             context["feedback_list"] = CourseFeedback.objects.filter(course=context["course_object"]).order_by(
                 "-created", "-rating")[:5]
             cache.set(f'feedback_list_{pk}', context['feedback_list'], timeout=300)
+
+            # import pickle
+
+            # with open(f'mainapp/fixtures/feedback_list_{pk}.bin', 'wb') as outf:
+            #     pickle.dump(context['feedback_list'], outf)
+
         else:
             context['feedback_list'] = cached_feedback_list
 

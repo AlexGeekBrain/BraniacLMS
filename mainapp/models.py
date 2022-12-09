@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class News(models.Model):
@@ -17,8 +18,8 @@ class News(models.Model):
         return f'#{self.pk} {self.title}'
 
     class Meta:
-        verbose_name = 'Новость'
-        verbose_name_plural = 'Новости'
+        verbose_name = _('Новость')
+        verbose_name_plural = _('Новости')
 
     def delete(self, *args, **kwargs):
         self.deleted = True
@@ -30,6 +31,7 @@ class Course(models.Model):
     description = models.TextField(verbose_name='Описание')
 
     cost = models.DecimalField(max_digits=8, decimal_places=2, verbose_name='Стоимость', default=0)
+    cover = models.CharField(max_length=25, default="no_image.svg", verbose_name="Cover")
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создан')
     update_at = models.DateTimeField(auto_now=True, verbose_name='Обновлен')
@@ -39,8 +41,8 @@ class Course(models.Model):
         return f'#{self.pk} {self.title}'
 
     class Meta:
-        verbose_name = 'Курс'
-        verbose_name_plural = 'Курсы'
+        verbose_name = _('Курс')
+        verbose_name_plural = _('Курсы')
 
     def delete(self, *args, **kwargs):
         self.deleted = True
@@ -62,8 +64,8 @@ class Lesson(models.Model):
         return f'#{self.num} {self.title}'
 
     class Meta:
-        verbose_name = 'Урок'
-        verbose_name_plural = 'Уроки'
+        verbose_name = _('Урок')
+        verbose_name_plural = _('Уроки')
 
     def delete(self, *args, **kwargs):
         self.deleted = True
@@ -75,12 +77,12 @@ class CourseTeacher(models.Model):
     first_name = models.CharField(max_length=256, verbose_name='Имя')
     last_name = models.CharField(max_length=256, verbose_name='Фамилия')
 
-    def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+    def __str__(self) -> str:
+        return "{0:0>3} {1} {2}".format(self.pk, self.last_name, self.first_name)
 
     class Meta:
-        verbose_name = 'Курс к учителю'
-        verbose_name_plural = 'Курсы к учителям'
+        verbose_name = _('Курс к учителю')
+        verbose_name_plural = _('Курсы к учителям')
 
     def delete(self, *args, **kwargs):
         self.deleted = True

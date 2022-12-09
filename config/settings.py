@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.locale.LocaleMiddleware', 
 
 ]
 
@@ -182,9 +183,9 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 # EMAIL_USE_SSL = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'emails-tmp'
+EMAIL_FILE_PATH = 'var/emails-tmp/'
 
-LOG_FILE = BASE_DIR / 'log' / 'main_log.log'
+LOG_FILE = BASE_DIR / 'var' / 'log' / 'main_log.log'
 
 LOGGING = {
     'version': 1,
@@ -207,3 +208,7 @@ LOGGING = {
         'django': {'level': 'INFO', 'handlers': ['file', 'console']},
     },
 }
+
+LOCALE_PATHS = [BASE_DIR / 'locale']
+
+SELENIUM_DRIVER_PATH_FF = BASE_DIR / 'var' / 'selenium' / 'geckodriver'
