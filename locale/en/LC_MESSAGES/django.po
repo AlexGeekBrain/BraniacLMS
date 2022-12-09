@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-07 15:16+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: authapp/models.py:12
+msgid "Пользователь"
+msgstr "User"
+
+#: authapp/models.py:13
+msgid "Пользователи"
+msgstr "Users"
+
+#: mainapp/models.py:21
+msgid "Новость"
+msgstr "News"
+
+#: mainapp/models.py:22 mainapp/templates/mainapp/includes/inc_main_menu.html:5
+msgid "Новости"
+msgstr "News"
+
+#: mainapp/models.py:43
+msgid "Курс"
+msgstr "Course"
+
+#: mainapp/models.py:44 mainapp/templates/mainapp/includes/inc_main_menu.html:8
+msgid "Курсы"
+msgstr "Courses"
+
+#: mainapp/models.py:66
+msgid "Урок"
+msgstr "Lesson"
+
+#: mainapp/models.py:67
+msgid "Уроки"
+msgstr "Lessons"
+
+#: mainapp/models.py:83
+msgid "Курс к учителю"
+msgstr "Course to the teacher"
+
+#: mainapp/models.py:84
+msgid "Курсы к учителям"
+msgstr "Courses for teachers"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:14
+msgid "Профиль"
+msgstr "Profile"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:17
+msgid "Редактировать профиль"
+msgstr "Edit profile"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:18
+msgid "Мои курсы"
+msgstr "My courses"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:21
+msgid "Модерация"
+msgstr "Moderation"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:24
+msgid "Административный раздел"
+msgstr "Administrative section"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:25
+msgid "Логи"
+msgstr "Logs"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:28
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:44
+msgid "Выход"
+msgstr "Exit"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:33
+msgid "Вход"
+msgstr "Enter"
+
+#: mainapp/templates/mainapp/includes/inc_main_menu.html:37
+msgid "Контакты"
+msgstr "Contacts"
+
+#: templates/admin/base_site.html:6
+msgid "Административный раздел сайта"
+msgstr "Administrative section of the site"
