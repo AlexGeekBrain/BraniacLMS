@@ -1,0 +1,86 @@
+[
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 1,
+      "fields": {
+        "first_name": "Альфред",
+        "last_name": "Нуцубидзе",
+        "courses": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 2,
+      "fields": {
+        "first_name": "Роман",
+        "last_name": "Доржинов",
+        "courses": [
+          2,
+          4
+        ]
+      }
+    },
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 3,
+      "fields": {
+        "first_name": "Ярослав",
+        "last_name": "Конягин",
+        "courses": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 4,
+      "fields": {
+        "first_name": "Автандил",
+        "last_name": "Наварский",
+        "courses": [
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 5,
+      "fields": {
+        "first_name": "Роза",
+        "last_name": "Уланова",
+        "courses": [
+          5,
+          7
+        ]
+      }
+    },
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 6,
+      "fields": {
+        "first_name": "Бронислава",
+        "last_name": "Алиева",
+        "courses": [
+          6,
+          7
+        ]
+      }
+    },
+    {
+      "model": "mainapp.CourseTeacher",
+      "pk": 7,
+      "fields": {
+        "first_name": "Диана",
+        "last_name": "Попова",
+        "courses": [
+          1,
+          4
+        ]
+      }
+    }
+  ]

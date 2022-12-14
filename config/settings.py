@@ -20,12 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c&j#%2kyk4v9-95e@81ue$x^u+9ik#j8mo5#m1+hu$uo*90=54'
+SECRET_KEY = '_h94+q_xj7dshrj58iyznl^ighi=qlffj!d2jncd87nzkucke1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+if DEBUG:
+    INTERNAL_IPS = [
+        '127.0.0.1',
+    ]
 
 
 # Application definition
@@ -38,6 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
+    'authapp',
+    'social_django',
+    'crispy_forms',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +57,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'django.middleware.locale.LocaleMiddleware', 
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -55,7 +67,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +75,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'mainapp.context_processor.my_context_processor',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -118,7 +133,82 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
+AUTH_USER_MODEL = 'authapp.User'
+LOGIN_REDIRECT_URL = 'mainapp:index'
+LOGOUT_REDIRECT_URL = 'mainapp:index'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GITHUB_KEY = '07828a34d4304b1e0236'
+SOCIAL_AUTH_GITHUB_SECRET = '69c6b99bfe60ec11b80b4e36c683992fbf47c88f'
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    }
+}
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+# EMAIL_HOST = 'smtp.yandex.ru'
+# EMAIL_PORT = '465'
+# EMAIL_HOST_USER = 'myname@yandex.ru'
+# EMAIL_HOST_PASSWORD = 'mypassword'
+# EMAIL_USE_SSL = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'var/emails-tmp/'
+
+LOG_FILE = BASE_DIR / 'var' / 'log' / 'main_log.log'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '[%(asctime)s] %(levelname)s %(name)s (%(lineno)d) %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+            'formatter': 'console',
+        },
+        'console': {'class': 'logging.StreamHandler', 'formatter': 'console'},
+    },
+    'loggers': {
+        'django': {'level': 'INFO', 'handlers': ['file', 'console']},
+    },
+}
+
+LOCALE_PATHS = [BASE_DIR / 'locale']
+
+SELENIUM_DRIVER_PATH_FF = BASE_DIR / 'var' / 'selenium' / 'geckodriver'
